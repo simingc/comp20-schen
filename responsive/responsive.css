@@ -1,8 +1,8 @@
 /* stylesheet for implementing media query using a sprite sheet */
 
 
-
 @media screen and (min-width: 1201px){
+
 .homer{
 	width: 317px; height: 317px; background:url(homer.jpg) 0 0px;
 	}
@@ -16,7 +16,7 @@
 
 }
 
-@media screen and (min-width: 401px) and (max-device-width: 800px){
+@media screen and (min-width: 401px) and (max-width: 800px){
 
 	.homer{
 		width: 317px; height: 317px; background:url(homer.jpg) 0 -308px;
