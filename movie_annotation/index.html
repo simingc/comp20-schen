@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<title>Classic Movie</title>
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+<h1 id="title">Classic Movie</h1>
+
+<video src="https://www.cs.tufts.edu/comp/20/classic.mp4" id="classic_video" controls></video>
+<div id="movie_quotes"></div>
+
+<script>
+
+	var movie = document.getElementById("classic_video");
+	var quote = document.getElementById("movie_quotes");
+
+	movie.ontimeupdate = function(){changetime()};
+
+	function changetime(){
+
+		var time = movie.currentTime
+
+		if (time > 24.042234){
+		quote.innerHTML = "Igor: DR. FRANKENSTEIN?!?!?";
+		}
+
+		if (time > 31.152274){
+		quote.innerHTML = "Dr. Frederick Frankenstein: Frokensteen.";
+		}
+
+		if (time > 34.725404){
+			quote.innerHTML = "Igor: You're putting me on.";
+		}
+		if (time > 36.027335){
+			quote.innerHTML = 'Dr. Frederick Frankenstein: No, it pronounced, "Frokensteen".';
+		}
+
+		if (time > 39.62412){
+			quote.innerHTML = "Igor: Do you also say Froaderick?";
+		}
+		if (time > 42.006498){
+			quote.innerHTML = 'Dr. Frederick Frankenstein: No . . . "Frederick."';
+		}
+
+		if (time > 44.3627651){
+			quote.innerHTML = "Igor: Well, why isn't it 'Froaderick Frokensteen'?";
+		}
+
+		if (time > 47.267303){
+			quote.innerHTML = 'Dr. Frederick Frankenstein: It isn\'t, it\'s "Frederick Frokensteen"';
+		}
+		if (time > 50.143061){
+			quote.innerHTML = "Igor: I see.";
+		}
+		if (time > 52.235452){
+			quote.innerHTML = "Dr. Frederick Frankenstein: You must be Igor. [He pronounces it ee-gor.]";
+		}
+		if (time > 53.3931751){
+			quote.innerHTML = "Igor: No, it's pronounced 'eye-gor.'";
+		}
+		if (time > 56.867522){
+			quote.innerHTML = 'Dr. Frederick Frankenstein: But they told me it was "ee-gor"...';
+		}
+		if (time > 58.724592){
+			quote.innerHTML = "Igor: Well, they were wrong then, weren't they?";
+		}
+		if (time > 61){
+			quote.innerHTML = "Dr. Frederick Frankenstein: Uh, you were sent here by Herr Falkstein, weren't you?";
+		}
+		if (time > 64.532165){
+			quote.innerHTML = "Igor: Yes. My grandfather used to work for your grandfather.";
+		}
+		if (time > 68.910344){
+			quote.innerHTML = "Dr. Frederick Frankenstein: How nice.";
+		}
+		if (time > 72.157831){
+			quote.innerHTML = "Igor: Of course the rates have gone up.";
+		}
+		if (time > 74.308384){
+			quote.innerHTML = "Dr. Frederick Frankenstein: Of course, of course, I'm sure we'll get along splendidly. Oh, I uh, you know I don't mean to embarrass you, but I'm rather a brilliant surgeon. Perhaps I can help you with that hump.";
+		}
+		if (time > 89.213174){
+			quote.innerHTML = "Igor: What hump?";
+		}
+
+	}
+
+
+</script>
+</body>
+
+</html>	
