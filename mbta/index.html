@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<head>
+	<meta name="author" content="Siming Chen"/>
+	<meta name="description" content="A MBTA station"/>
+	<title>Closest MBTA stop</title>
+	<link ref="stylesheet" href="style.css"/>
+	<script type="text/javascript" src = "https://maps.googleapis.com/maps/api/js?sensor=true"></script>
+	<meta name="viewport" content="initial-scale=1.0, user-scale=no"/>
+</head>
+
+<body onload="initMap()">
+<div id="map"></div>
+
+<script>
+
+var myLat = 51.5;
+var myLng = -0.2;
+var me = new google.maps.LatLng(myLat, myLng);
+var request = new XMLHttpRequest ();
+var mapOptions = {
+	center: me,
+	zoom: 10
+};
+
+function initMap(){
+	var map = new google.maps.Map(document.getElementById('map'),mapOptions);
+	getMyLocation();
+}
+
+function getMyLocation(){
+	if(navigator.geolocation){
+		navigator.geolocation.getCurrentPosition(function(position){
+			myLat = position.coords.latitude;
+			myLng = position.coords.longitude;
+			renderMap();
+		});
+	}
+	else {
+		alert("Geolocation is not supported by your web browser.");
+	}
+}
+function renderMap(){
+	me = new google.maps.LatLng(myLat, myLng);
+
+	map.panTo(me);
+
+}
+
+
+</script>
+
+</body>
+</html>
