@@ -1,0 +1,23 @@
+/* stylesheet for index.html for movie annotation */
+
+#title {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size: 40px;
+	text-align: center;
+}
+
+#classic_video {
+	width: 50%;
+	height: 50%;
+	display: block;
+	margin: auto;
+}
+
+#movie_quotes {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 20px;
+	text-align: center;
+	margin-top: 5px;
+	padding-left: 25%;
+	padding-right: 25%;
+}
