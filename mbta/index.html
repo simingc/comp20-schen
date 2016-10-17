@@ -3,11 +3,8 @@
 	<meta name="author" content="Siming Chen"/>
 	<meta name="description" content="A MBTA station"/>
 	<title>Closest MBTA stop</title>
-	<meta name="viewport" content="initial-scale=1.0, user-scale=no"/>
 	<script type="text/javascript" src = "https://maps.googleapis.com/maps/api/js?sensor=true"></script>
-	<link ref="stylesheet" href="style.css"/>
-
-	
+	<link rel="stylesheet" type="text/css" href="./style.css">	
 </head>
 
 
@@ -20,8 +17,7 @@ var request = new XMLHttpRequest();
 var me = new google.maps.LatLng(myLat, myLng);
 var mapOptions = {
 	center: me,
-	zoom: 10
-	//mapTypeId: google.maps.MapTypeId.ROADMAP
+	zoom: 15
 };
 var map;
 var marker;
@@ -29,6 +25,7 @@ var infowindow = new google.maps.InfoWindow();
 
 function init(){
 	map = new google.maps.Map(document.getElementById('map_onscreen'),mapOptions);
+	console.log(map);
 	getMyLocation();
 }
 
@@ -59,15 +56,15 @@ function renderMap(){
 
 	google.maps.event.addListener(marker, 'click', function(){
 		infowindow.setContent(marker.title);
-		infowindow.open(map, marker);	});
+		infowindow.open(map, marker);	
+	});
 
 }
 
-window.onload = init;
 
 </script>
 
-<body>
+<body onload="init()">
 	<div id="map_onscreen"></div>
 </body>
 </html>
