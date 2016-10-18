@@ -53,64 +53,76 @@ function renderMap(){
 
 }
 
-//set marks for MBTA station
+//set marks for MBTA station and render polyline for redline
 function set_Marker(){
 var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
 
 var redline_station = [
-{position: new google.maps.LatLng(42.352271, -71.05524200000001),
-type: 'info'},
-{position: new google.maps.LatLng(42.330154, -71.057655),
-type: 'info'},
-{position: new google.maps.LatLng(42.3884, -71.11914899999999),
-type: 'info'},
-{position: new google.maps.LatLng(42.373362, -71.118956),
-type: 'info'},
-{position: new google.maps.LatLng(42.320685, -71.052391),
-type: 'info'},
-{position: new google.maps.LatLng(42.31129, -71.053331),
-type: 'info'},
-{position: new google.maps.LatLng(42.35639457, -71.0624242),
-type: 'info'},
-{position: new google.maps.LatLng(42.342622, -71.056967),
-type: 'info'},
-{position: new google.maps.LatLng(42.275275, -71.029583),
-type: 'info'},
-{position: new google.maps.LatLng(42.29312583, -71.06573796000001),
-type: 'info'},
-{position: new google.maps.LatLng(42.395428, -71.121815),
-type: 'info'},
-{position: new google.maps.LatLng(42.352271, -71.142483),
-type: 'info'},
-{position: new google.maps.LatLng(42.36249079, -71.08617653),
-type: 'info'},
-{position: new google.maps.LatLng(42.361166, -71.070628),
-type: 'info'},
-{position: new google.maps.LatLng(42.355518,-71.060225),
-type: 'info'},
-{position: new google.maps.LatLng(42.251809,-71.005409),
-type: 'info'},
-{position: new google.maps.LatLng(42.233391,-71.007153),
-type: 'info'},
-{position: new google.maps.LatLng(42.284652,-71.06448899999999),
-type: 'info'},
-{position: new google.maps.LatLng(42.2665139,-71.0203369),
-type: 'info'},
-{position: new google.maps.LatLng(42.300093,-71.061667),
-type: 'info'},
-{position: new google.maps.LatLng(42.365486,-71.103802),
-type: 'info'},
-{position: new google.maps.LatLng(42.2078543, -71.0011385),
-type: 'info'},
+{lat: 42.395428, lng: -71.142483},
+{lat: 42.39674, lng: -71.121815},
+{lat: 42.3884, lng:-71.11914899999999},
+{lat:42.373362, lng: -71.118956},
+{lat: 42.365486,lng: -71.103802},
+{lat:42.36249079, lng: -71.08617653},
+{lat: 42.361166, lng:-71.070628},
+{lat: 42.35639457, lng:-71.0624242},
+{lat: 42.355518,lng: -71.060225},
+{lat: 42.352271, lng:-71.05524200000001},
+{lat: 42.342622, lng:-71.056967},
+{lat: 42.330154, lng:-71.057655},
+{lat: 42.320685, lng:-71.052391},
+{lat:42.275275, lng:-71.029583},
+{lat:42.2665139,lng:-71.0203369},
+{lat:42.251809,lng:-71.005409},
+{lat:42.233391,lng:-71.007153},
+{lat:42.2078543, lng:-71.0011385},
+{lat:42.31129, lng:-71.053331},
+{lat:42.300093,lng:-71.061667},
+{lat:42.29312583, lng:-71.06573796000001},
+{lat:42.284652,lng:-71.06448899999999},
 ];
 
+//mark each train station
 for (var i = 0; i < 22; i++){
 var marker = new google.maps.Marker({
-	position : redline_station[i].position,
+	position : redline_station[i],
 	icon: image,
 	map: map
 	});
 }
+var redline_braintree = [
+{lat: 42.395428, lng: -71.142483},
+{lat: 42.39674, lng: -71.121815},
+{lat: 42.3884, lng:-71.11914899999999},
+{lat:42.373362, lng: -71.118956},
+{lat: 42.365486,lng: -71.103802},
+{lat:42.36249079, lng: -71.08617653},
+{lat: 42.361166, lng:-71.070628},
+{lat: 42.35639457, lng:-71.0624242},
+{lat: 42.355518,lng: -71.060225},
+{lat: 42.352271, lng:-71.05524200000001},
+{lat: 42.342622, lng:-71.056967},
+{lat: 42.330154, lng:-71.057655},
+{lat: 42.320685, lng:-71.052391},
+{lat:42.275275, lng:-71.029583},
+{lat:42.2665139,lng:-71.0203369},
+{lat:42.251809,lng:-71.005409},
+{lat:42.233391,lng:-71.007153},
+{lat:42.2078543, lng:-71.0011385}
+]
+
+//render polyline on the map
+var redline_path = new google.maps.Polyline({
+	path: redline_braintree,
+	geodesic: true,
+	strokeColor: '#FF0000',
+	strokeOpacity: 1.0,
+	strokeWeight: 3
+});
+
+redline_path.setMap(map);
+
+
 }
 
 
