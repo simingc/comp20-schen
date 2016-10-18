@@ -55,7 +55,7 @@ function renderMap(){
 
 //set marks for MBTA station
 function set_Marker(){
-var image = "file:///Users/user/Downloads/ic_donut_large_black_24px.svg";
+var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
 
 var redline_station = [
 {position: new google.maps.LatLng(42.352271, -71.05524200000001),
@@ -104,15 +104,15 @@ type: 'info'},
 type: 'info'},
 ];
 
-
+for (var i = 0; i < 22; i++){
 var marker = new google.maps.Marker({
-	position = {lat: 42.2078543, lng:-71.0011385},
+	position : redline_station[i].position,
 	icon: image,
 	map: map
 	});
 }
-
 }
+
 
 
 // request data from MBTA
