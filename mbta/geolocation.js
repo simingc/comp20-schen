@@ -1,5 +1,7 @@
-//setup the map in general
-
+/* Part 1:
+	Set up the map in genreal
+	including init map, get my location, rendermap on web
+*/
 var myLat = 0;
 var myLng = 0;
 var me = new google.maps.LatLng(myLat, myLng);
@@ -8,7 +10,7 @@ var mapOptions = {
 	zoom: 15
 };
 var map;
-var marker;
+var marker_me;
 var infowindow = new google.maps.InfoWindow();
 
 //initiate google map 
@@ -39,24 +41,23 @@ function renderMap(){
 
 	map.panTo(me);
 
-	marker = new google.maps.Marker({
+	marker_me = new google.maps.Marker({
 		position: me,
 		title: "here"
 	});
 
-	marker.setMap(map);
+	marker_me.setMap(map);
 
-	google.maps.event.addListener(marker, 'click', function(){
-		infowindow.setContent(marker.title);
-		infowindow.open(map, marker);	
+	google.maps.event.addListener(marker_me, 'click', function(){
+		infowindow_me.setContent(nearest_station);
+		infowindow_me.open(map, marker_me);	
 	});
 
 }
 
-//set marks for MBTA station and render polyline for redline
-function set_Marker(){
-var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
-
+/* Part 2:
+	set marks for MBTA station and render polyline for redline
+*/
 var redline_station = [
 {lat: 42.395428, lng: -71.142483},
 {lat: 42.39674, lng: -71.121815},
@@ -82,14 +83,43 @@ var redline_station = [
 {lat:42.284652,lng:-71.06448899999999},
 ];
 
-//mark each train station
+var redline_name = [
+"Alewife Station", 
+"Davis Station", 
+"Porter Square Station",
+"Harvard Square Station",
+"Central Square Station",
+"Kendall Station",
+"Charles/MGH Station",
+"Park Street Station",
+"Downtown Crossing Station",
+"South Station",
+"Broadway Station",
+"Andrew Station",
+"JFK/UMass Station",
+"North Quincy Station",
+"Wollaston Station",
+"Quincy Center Station",
+"Quincy Adams Station",
+"Braintree Station",
+"Savin Hill Station",
+"Fields Corner",
+"Shawmut Station",
+"Ashmont Station"
+]
+
+//set marker for each station
+function set_Marker(){
+var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
+
 for (var i = 0; i < 22; i++){
-var marker = new google.maps.Marker({
+var marker_station = new google.maps.Marker({
 	position : redline_station[i],
 	icon: image,
 	map: map
 	});
 }
+
 var redline_braintree = [
 {lat: 42.395428, lng: -71.142483},
 {lat: 42.39674, lng: -71.121815},
@@ -111,6 +141,14 @@ var redline_braintree = [
 {lat:42.2078543, lng:-71.0011385}
 ]
 
+var redline_two = [
+{lat: 42.320685, lng:-71.052391},
+{lat:42.31129, lng:-71.053331},
+{lat:42.300093,lng:-71.061667},
+{lat:42.29312583, lng:-71.06573796000001},
+{lat:42.284652,lng:-71.06448899999999},
+]
+
 //render polyline on the map
 var redline_path = new google.maps.Polyline({
 	path: redline_braintree,
@@ -119,15 +157,87 @@ var redline_path = new google.maps.Polyline({
 	strokeOpacity: 1.0,
 	strokeWeight: 3
 });
+//render the second polyline on the map
+var redline_pathtwo = new google.maps.Polyline({
+	path : redline_two,
+	geodesic: true,
+	strokeColor: '#FF0000',
+	strokeOpacity: 1.0,
+	strokeWeight: 3
+});
 
 redline_path.setMap(map);
-
+redline_pathtwo.setMap(map);
 
 }
 
 
+/*	Part 3: calculate the distance
+	calculate distance of the closest station, render info in infowindow, 
+	render polyline from current position to nearest station
+*/
+var R = 6371e3;
+var distance = 0;
 
-// request data from MBTA
+if (typeof(Number.prototype.toRad) == "undefined"){
+	Number.prototype.toRad = function(){
+		return this * Math.PI / 180;
+	}
+}
+
+//calculate distance
+var counter = 0;
+for (i = 0; i < 22; i++){
+	var lat1 = redline_station[i].lat.toRad();
+	var lat2 = myLat.toRad();
+	var LAT = (lat2 - lat1).toRad();
+	var LNG = (myLng - redline_station[1].lng).toRad();
+
+	var a = Math.sin(LAT/2) * Math.sin(LAT/2) + Math.cos(lat1) * Math.cos(lat2) *
+	Math.sin(LNG/2) * Math.sin(LNG/2);
+
+	var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+	var d = R * c;
+
+	if (i == 0){
+		distance = d;
+	}else if (d < distance){
+		distance = d;
+		counter = i;
+	}
+}
+
+//set info to my location marker
+var nearest_station = 'Nearest RedLine Station: ' + redline_name[counter] +"<br>" + 
+'Distance: ' + distance + ' miles';
+
+var infowindow_me = new google.maps.InfoWindow({
+	content : nearest_station
+});
+
+//render a polyline from me to nearest station
+// HAVE a Problem rendering the line here!!!
+function blueline(){
+var nearest_distance = [
+	{lat: myLat, lng: myLng},
+	redline_station[counter]
+];
+
+var blueline = new google.maps.Polyline({
+	path : nearest_distance,
+	geodesic: true,
+	strokeColor: '#FF0000',
+	strokeOpacity: 1.0,
+	strokeWeight: 3
+});
+}
+
+
+/*  Part 4: Request data from MBTA
+	set train info for each station marker
+
+*/
 var request = new XMLHttpRequest();
 
 request.open("get", "https://rocky-taiga-26352.herokuapp.com/redline.json", true);
