@@ -38,28 +38,28 @@ var redline_station = [
 ];
 
 var redline_name = [
-"Alewife Station", 
-"Davis Station", 
-"Porter Square Station",
-"Harvard Square Station",
-"Central Square Station",
-"Kendall Station",
-"Charles/MGH Station",
-"Park Street Station",
-"Downtown Crossing Station",
-"South Station",
-"Broadway Station",
-"Andrew Station",
-"JFK/UMass Station",
-"North Quincy Station",
-"Wollaston Station",
-"Quincy Center Station",
-"Quincy Adams Station",
-"Braintree Station",
-"Savin Hill Station",
+"Alewife", 
+"Davis", 
+"Porter Square",
+"Harvard Square",
+"Central Square",
+"Kendall",
+"Charles/MGH",
+"Park Street",
+"Downtown Crossing",
+"South",
+"Broadway",
+"Andrew",
+"JFK/UMass",
+"North Quincy",
+"Wollaston",
+"Quincy Center",
+"Quincy Adams",
+"Braintree",
+"Savin Hill",
 "Fields Corner",
-"Shawmut Station",
-"Ashmont Station"
+"Shawmut",
+"Ashmont"
 ];
 
 var redline_braintree = [
@@ -213,8 +213,6 @@ function distance(){
 			counter = i;
 		}
 	}
-	//console.log(distance);
-
 //set info to my location marker
 	var nearest_station = 'Nearest RedLine Station: ' + redline_name[counter] +"<br>" + 
 	'Distance: ' + distance + ' miles';
@@ -265,10 +263,39 @@ function metroinfo(){
 		//message = request.responseText;
 		metroData = JSON.parse (request.responseText);
 
-		console.log(metroData);
+		var schedulelist = new Array(redline_station.length);
+		//resort the data into list of station
+		for (var i = 0; i < metroData["TripList"]["Trips"].length; i++){
+			var Des = metroData["TripList"]["Trips"][i]["Destination"];
+			for (var j = 0; j < metroData["TripList"]["Trips"][i]["Predictions"].length; j++){
+				for (var k = 0; k < redline_name.length; k++){
+					if (metroData["TripList"]["Trips"][i]["Predictions"][j]["Stop"] == redline_name[k]){
+						time = (metroData["TripList"]["Trips"][i]["Predictions"][j]["Seconds"]);
+						des = (metroData["TripList"]["Trips"][i]["Destination"]);
 
-	}else{}
+						var schedule = {time, des};
+
+						if (schedulelist[k] == null){
+							schedulelist[k] = new Array();
+							schedulelist[k].push(schedule);
+						} else schedulelist[k].push(schedule);
+
+					}
+				}
+
+			}
+		}
+		console.log(schedulelist);
+
+
+	}
 
 }
+
+
+
+		
+
+
 
 
