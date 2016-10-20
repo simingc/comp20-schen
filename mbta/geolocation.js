@@ -43,11 +43,11 @@ var redline_name = [
 "Porter Square",
 "Harvard Square",
 "Central Square",
-"Kendall",
+"Kendall/MIT",
 "Charles/MGH",
 "Park Street",
 "Downtown Crossing",
-"South",
+"South Station",
 "Broadway",
 "Andrew",
 "JFK/UMass",
@@ -137,10 +137,9 @@ function renderMap(){
 
 
 /* Part 2:
-	set marks for MBTA station and render polyline for redline
+   Render polyline for redline
 */
 
-//set marker for each station
 function poly_line(){
 
 //render polyline on the map
@@ -240,7 +239,7 @@ function distance(){
 
 
 /*  Part 4: Request data from MBTA
-	set train info for each station marker
+	sort train info into each station
 
 */
 var schedulelist = new Array(redline_station.length);
@@ -278,15 +277,17 @@ function metroinfo(){
 				}
 			}
 		}
+		console.log(schedulelist);
 	}
 }
 
 
-/* Part 5: render info window for markers
+/* Part 5: Set markers for each station,
+	render info window for markers
+	set content for each marker 
    	
 */
 function GoogleMapMarker(string, lat1, long1){
-
 
 	for (var i = 0; i < 22; i++){
 		var marker_station = install_window(redline_station[i], redline_name[i], i);
@@ -317,6 +318,8 @@ function install_window(position, station_name, number){
 
 function get_content(a){
 
+	console.log(a);
+	console.log(schedulelist[a]);
 	var content_s = '<h3>' + 'Station: ' + redline_name[a] + '</h3>' ;
 
 	for (var i = 0; i < schedulelist[a].length; i++){
