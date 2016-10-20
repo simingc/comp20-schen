@@ -62,35 +62,6 @@ var redline_name = [
 "Ashmont"
 ];
 
-var redline_braintree = [
-{lat: 42.395428, lng: -71.142483},
-{lat: 42.39674, lng: -71.121815},
-{lat: 42.3884, lng:-71.11914899999999},
-{lat:42.373362, lng: -71.118956},
-{lat: 42.365486,lng: -71.103802},
-{lat:42.36249079, lng: -71.08617653},
-{lat: 42.361166, lng:-71.070628},
-{lat: 42.35639457, lng:-71.0624242},
-{lat: 42.355518,lng: -71.060225},
-{lat: 42.352271, lng:-71.05524200000001},
-{lat: 42.342622, lng:-71.056967},
-{lat: 42.330154, lng:-71.057655},
-{lat: 42.320685, lng:-71.052391},
-{lat:42.275275, lng:-71.029583},
-{lat:42.2665139,lng:-71.0203369},
-{lat:42.251809,lng:-71.005409},
-{lat:42.233391,lng:-71.007153},
-{lat:42.2078543, lng:-71.0011385}
-];
-
-var redline_two = [
-{lat: 42.320685, lng:-71.052391},
-{lat:42.31129, lng:-71.053331},
-{lat:42.300093,lng:-71.061667},
-{lat:42.29312583, lng:-71.06573796000001},
-{lat:42.284652,lng:-71.06448899999999},
-];
-
 /* Part 1:
 	Set up the map in genreal
 	including init map, get my location, rendermap on web
@@ -142,17 +113,29 @@ function renderMap(){
 
 function poly_line(){
 
-//render polyline on the map
+//render first polyline on map
+var firstline = new Array();
+for (var i = 0; i < 18; i++){
+	firstline[i] = redline_station[i];
+}
+
 var redline_path = new google.maps.Polyline({
-	path: redline_braintree,
+	path: firstline,
 	geodesic: true,
 	strokeColor: '#FF0000',
 	strokeOpacity: 1.0,
 	strokeWeight: 3
 });
+
 //render the second polyline on the map
+var secondline = new Array();
+secondline[0] = {lat: 42.320685, lng:-71.052391};
+for (var j = 18; j < 22; j++){
+	secondline[j-17] = redline_station[j];
+}
+
 var redline_pathtwo = new google.maps.Polyline({
-	path : redline_two,
+	path : secondline,
 	geodesic: true,
 	strokeColor: '#FF0000',
 	strokeOpacity: 1.0,
@@ -209,7 +192,7 @@ function distance(){
 
 //set info to my location marker
 	var nearest_station = 'Nearest RedLine Station: ' + redline_name[counter] +"<br>" + 
-	'Distance: ' + distance + ' miles';
+	'Distance: ' + Math.round(distance * 0.00062137 * 100)/100 + ' miles';
 
 	var infowindow_me = new google.maps.InfoWindow({
 		content : nearest_station
