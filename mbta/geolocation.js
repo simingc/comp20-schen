@@ -11,6 +11,7 @@ var mapOptions = {
 var map;
 var marker_me;
 var infowindow = new google.maps.InfoWindow();
+var schedulelist = new Array(redline_station.length);
 
 var redline_station = [
 {lat: 42.395428, lng: -71.142483},
@@ -99,8 +100,8 @@ var redline_two = [
 function init(){
 	map = new google.maps.Map(document.getElementById('map_onscreen'),mapOptions);
 	getMyLocation();
-	set_Marker(); //set marker only for all train statio 
-	request_info(); //request info from MBTA
+	poly_line(); //set marker only for all train statio 
+	GoogleMapMarker();
 }
 
 //get location for map
@@ -140,16 +141,7 @@ function renderMap(){
 */
 
 //set marker for each station
-function set_Marker(){
-var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
-
-for (var i = 0; i < 22; i++){
-var marker_station = new google.maps.Marker({
-	position : redline_station[i],
-	icon: image,
-	map: map
-	});
-}
+function poly_line(){
 
 //render polyline on the map
 var redline_path = new google.maps.Polyline({
@@ -263,8 +255,8 @@ function metroinfo(){
 		//message = request.responseText;
 		metroData = JSON.parse (request.responseText);
 
-		var schedulelist = new Array(redline_station.length);
-		//resort the data into list of station
+		//resort the mbta data based on station
+
 		for (var i = 0; i < metroData["TripList"]["Trips"].length; i++){
 			var Des = metroData["TripList"]["Trips"][i]["Destination"];
 			for (var j = 0; j < metroData["TripList"]["Trips"][i]["Predictions"].length; j++){
@@ -287,14 +279,49 @@ function metroinfo(){
 		}
 		console.log(schedulelist);
 
-
 	}
 
 }
 
 
+/* Part 5: render info window for markers
+   	
+*/
+function GoogleMapMarker(string, lat1, long1){
 
-		
+	request_info();
+	
+	var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
+
+	for (var i = 0; i < 22; i++){
+	var marker_station = new google.maps.Marker({
+		position : redline_station[i],
+		icon: image,
+		map: map
+		});
+	}
+
+
+	var r = new google.maps.Marker({
+		map: map,
+		position: new google.maps.LatLng(lat1, long1),
+		title: string,
+	});
+
+	google.maps.event.addListener(r, 'click', function(){
+
+		if (!this.getMap()._infoWindow){
+			this.getMap().infoWindow = new google.maps.InfoWindow();
+		}
+		this.getMap()._infoWindow.close();
+		this.getMap()._infoWindow.setContent(this.content);
+		this.getMap()._infoWindow.open(this.getMap(), this);
+	});
+
+
+}	
+
+
 
 
 
