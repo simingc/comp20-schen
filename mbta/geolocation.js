@@ -100,6 +100,7 @@ function init(){
 	map = new google.maps.Map(document.getElementById('map_onscreen'),mapOptions);
 	getMyLocation();
 	poly_line(); //set marker only for all train statio 
+	request_info();
 	GoogleMapMarker();
 }
 
@@ -204,7 +205,6 @@ function distance(){
 			distance = d;
 			counter = i;
 		}
-		//console.log(counter);
 
 	}
 
@@ -243,8 +243,7 @@ function distance(){
 	set train info for each station marker
 
 */
-schedulelist = new Array(redline_station.length);
-
+var schedulelist = new Array(redline_station.length);
 function request_info(){
 
 	request.open("get", "https://rocky-taiga-26352.herokuapp.com/redline.json", true);
@@ -256,11 +255,10 @@ function request_info(){
 function metroinfo(){
 	if (request.readyState == 4 && request.status == 200){
 
-		//message = request.responseText;
+		//metroData = request.responseText;
 		metroData = JSON.parse (request.responseText);
 
 		//resort the mbta data based on station
-
 		for (var i = 0; i < metroData["TripList"]["Trips"].length; i++){
 			var Des = metroData["TripList"]["Trips"][i]["Destination"];
 			for (var j = 0; j < metroData["TripList"]["Trips"][i]["Predictions"].length; j++){
@@ -278,56 +276,52 @@ function metroinfo(){
 
 					}
 				}
-
 			}
 		}
+		console.log(schedulelist);
 	}
-
 }
+console.log(schedulelist);
 
 /* Part 5: render info window for markers
    	
 */
-
-//why this schedule list doesn't work??????
-console.log(schedulelist);
 function GoogleMapMarker(string, lat1, long1){
 
-	request_info();
-
-	var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
 
 	for (var i = 0; i < 22; i++){
-
 		contentbag = get_content(i);
-		var marker_station = new google.maps.Marker({
-			position : redline_station[i],
-			icon: image,
-			map: map
-			});
-		marker_station.content = contentbag;
-		}
-
-	//how does it work??
-	var infoWindow = new google.maps.InfoWindow({
-		content : marker_station.content
-	});
-
-	google.maps.event.addListener(marker_station, 'click', function(){
-
-		infoWindow.setContent(marker_station[1].content);
-		infoWindow.open(map, marker_station[1]);
-		
-	});
-
+		var marker_station = install_window(redline_station[i], redline_name[i], contentbag);
+	}
 
 }	
 
+function install_window(position, station_name, content){
+	var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
+	var marker = new google.maps.Marker({
+		map: map,
+		position: position,
+		title: station_name,
+		icon: image,
+	});
+	if (content){
+		google.maps.event.addListener(marker, 'click', function(){
+			if (!this.getMap()._infoWindow){
+				this.getMap()._infoWindow = new google.maps.InfoWindow();
+			}
+			this.getMap()._infoWindow.close();
+			this.getMap()._infoWindow.setContent(content);
+			this.getMap()._infoWindow.open(this.getMap(), this);
+		});
+	}
+	return marker;
+}
 
 function get_content(a){
 
 	//can't access the data of schedule list, weird
-//	console.log(schedulelist);
+//	console.log(content);
+    //console.log(schedulelist.item[0]);
 	//var number = window.schedulelist.length;
 
 	var content_s = '<h3>' + 'Station: ' + redline_name[a] + '</h3>' ;
