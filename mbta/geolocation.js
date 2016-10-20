@@ -11,7 +11,6 @@ var mapOptions = {
 var map;
 var marker_me;
 var infowindow = new google.maps.InfoWindow();
-var schedulelist = new Array(redline_station.length);
 
 var redline_station = [
 {lat: 42.395428, lng: -71.142483},
@@ -101,7 +100,6 @@ function init(){
 	map = new google.maps.Map(document.getElementById('map_onscreen'),mapOptions);
 	getMyLocation();
 	poly_line(); //set marker only for all train statio 
-	request_info(); //request info from MBTA
 	GoogleMapMarker();
 }
 
@@ -185,27 +183,31 @@ function distance(){
 	var counter = 0;
 	for (i = 0; i < 22; i++){
 
-		var lat1 = redline_station[i].lat.toRad();
-		var lat2 = myLat.toRad();
-		var LAT = (lat2 - lat1).toRad();
-		var LNG = (myLng - redline_station[i].lng).toRad();
+		var lat1 = redline_station[i].lat;
+		var lng1 = redline_station[i].lng;
+		var lat2 = myLat;
+		var lng2 = myLng;
+		var dLAT = (lat2 - lat1).toRad();
+		var dLNG = (lng2 - lng1).toRad();
 
-		var a = Math.sin(LAT/2) * Math.sin(LAT/2) + 
-			Math.cos(lat1) * Math.cos(lat2) *
-			Math.sin(LNG/2) * Math.sin(LNG/2);
+		var a = Math.sin(dLAT/2) * Math.sin(dLAT/2) + 
+			Math.cos(lat1.toRad()) * Math.cos(lat2.toRad()) *
+			Math.sin(dLNG/2) * Math.sin(dLNG/2);
 
 		var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 
 		var d = R * c;
 
-		//console.log(d);
 		if (i == 0){
 			distance = d;
 		}else if (d < distance){
 			distance = d;
 			counter = i;
 		}
+		//console.log(counter);
+
 	}
+
 //set info to my location marker
 	var nearest_station = 'Nearest RedLine Station: ' + redline_name[counter] +"<br>" + 
 	'Distance: ' + distance + ' miles';
@@ -241,6 +243,7 @@ function distance(){
 	set train info for each station marker
 
 */
+schedulelist = new Array(redline_station.length);
 
 function request_info(){
 
@@ -266,7 +269,7 @@ function metroinfo(){
 						time = (metroData["TripList"]["Trips"][i]["Predictions"][j]["Seconds"]);
 						des = (metroData["TripList"]["Trips"][i]["Destination"]);
 
-						var schedule = {time, des};
+						schedule = {time, des};
 
 						if (schedulelist[k] == null){
 							schedulelist[k] = new Array();
@@ -278,50 +281,65 @@ function metroinfo(){
 
 			}
 		}
-		console.log(schedulelist);
-
 	}
 
 }
 
-
 /* Part 5: render info window for markers
    	
 */
+
+//why this schedule list doesn't work??????
+console.log(schedulelist);
 function GoogleMapMarker(string, lat1, long1){
+
+	request_info();
 
 	var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
 
 	for (var i = 0; i < 22; i++){
-	var marker_station = new google.maps.Marker({
-		position : redline_station[i],
-		icon: image,
-		map: map
-		});
-	}
 
+		contentbag = get_content(i);
+		var marker_station = new google.maps.Marker({
+			position : redline_station[i],
+			icon: image,
+			map: map
+			});
+		marker_station.content = contentbag;
+		}
 
-	var r = new google.maps.Marker({
-		map: map,
-		position: new google.maps.LatLng(lat1, long1),
-		title: string,
+	//how does it work??
+	var infoWindow = new google.maps.InfoWindow({
+		content : marker_station.content
 	});
 
-	google.maps.event.addListener(r, 'click', function(){
+	google.maps.event.addListener(marker_station, 'click', function(){
 
-		if (!this.getMap()._infoWindow){
-			this.getMap().infoWindow = new google.maps.InfoWindow();
-		}
-		this.getMap()._infoWindow.close();
-		this.getMap()._infoWindow.setContent(this.content);
-		this.getMap()._infoWindow.open(this.getMap(), this);
+		infoWindow.setContent(marker_station[1].content);
+		infoWindow.open(map, marker_station[1]);
+		
 	});
 
 
 }	
 
 
+function get_content(a){
 
+	//can't access the data of schedule list, weird
+//	console.log(schedulelist);
+	//var number = window.schedulelist.length;
+
+	var content_s = '<h3>' + 'Station: ' + redline_name[a] + '</h3>' ;
+/*
+	for (var i = 0; i < number; i++){
+		var content_s = content_s + 'Destination: ' + window.schedulelist[i][0] + 'Remain time: '
+		+ window.schedulelist[i]["time"]/60 + 'min';
+	}
+*/
+	return content_s;	
+
+}
 
 
 
