@@ -278,10 +278,9 @@ function metroinfo(){
 				}
 			}
 		}
-		console.log(schedulelist);
 	}
 }
-console.log(schedulelist);
+
 
 /* Part 5: render info window for markers
    	
@@ -290,13 +289,12 @@ function GoogleMapMarker(string, lat1, long1){
 
 
 	for (var i = 0; i < 22; i++){
-		contentbag = get_content(i);
-		var marker_station = install_window(redline_station[i], redline_name[i], contentbag);
+		var marker_station = install_window(redline_station[i], redline_name[i], i);
 	}
 
 }	
 
-function install_window(position, station_name, content){
+function install_window(position, station_name, number){
 	var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
 	var marker = new google.maps.Marker({
 		map: map,
@@ -304,33 +302,28 @@ function install_window(position, station_name, content){
 		title: station_name,
 		icon: image,
 	});
-	if (content){
+
 		google.maps.event.addListener(marker, 'click', function(){
 			if (!this.getMap()._infoWindow){
 				this.getMap()._infoWindow = new google.maps.InfoWindow();
 			}
+			content = get_content(number);
 			this.getMap()._infoWindow.close();
 			this.getMap()._infoWindow.setContent(content);
 			this.getMap()._infoWindow.open(this.getMap(), this);
 		});
-	}
 	return marker;
 }
 
 function get_content(a){
 
-	//can't access the data of schedule list, weird
-//	console.log(content);
-    //console.log(schedulelist.item[0]);
-	//var number = window.schedulelist.length;
-
 	var content_s = '<h3>' + 'Station: ' + redline_name[a] + '</h3>' ;
-/*
-	for (var i = 0; i < number; i++){
-		var content_s = content_s + 'Destination: ' + window.schedulelist[i][0] + 'Remain time: '
-		+ window.schedulelist[i]["time"]/60 + 'min';
+
+	for (var i = 0; i < schedulelist[a].length; i++){
+		var content_s = content_s + '<ul>' + '<li>' + 'To: ' + schedulelist[a][i]['des'] + ', Arrive in: '
+		+ Math.round(schedulelist[a][i]["time"]/60) + 'min' + '</li>' + '</ul>';
 	}
-*/
+
 	return content_s;	
 
 }
