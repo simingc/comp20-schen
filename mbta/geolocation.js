@@ -72,7 +72,6 @@ function init(){
 	getMyLocation();
 	poly_line(); //set marker only for all train statio 
 	request_info();
-	GoogleMapMarker();
 }
 
 //get location for map
@@ -94,14 +93,7 @@ function renderMap(){
 	me = new google.maps.LatLng(myLat, myLng);
 
 	map.panTo(me);
-
-	marker_me = new google.maps.Marker({
-		position: me,
-		title: "here"
-	});
-
-	marker_me.setMap(map);
-
+	GoogleMapMarker();
 	distance(); //find nearest and set info window
 	
 }
@@ -190,19 +182,6 @@ function distance(){
 
 	}
 
-//set info to my location marker
-	var nearest_station = 'Nearest RedLine Station: ' + redline_name[counter] +"<br>" + 
-	'Distance: ' + Math.round(distance * 0.00062137 * 100)/100 + ' miles';
-
-	var infowindow_me = new google.maps.InfoWindow({
-		content : nearest_station
-	});
-
-	google.maps.event.addListener(marker_me, 'click', function(){
-		infowindow_me.setContent(nearest_station);
-		infowindow_me.open(map, marker_me);	
-	});
-
 //render a polyline from me to nearest station
 	var nearest_distance = [
 		{lat: myLat, lng: myLng},
@@ -218,6 +197,9 @@ function distance(){
 	});
 	
 	blueline.setMap(map);
+
+	return {counter, distance};
+
 }
 
 
@@ -260,7 +242,6 @@ function metroinfo(){
 				}
 			}
 		}
-		console.log(schedulelist);
 	}
 }
 
@@ -275,17 +256,28 @@ function GoogleMapMarker(string, lat1, long1){
 	for (var i = 0; i < 22; i++){
 		var marker_station = install_window(redline_station[i], redline_name[i], i);
 	}
+	marker_station = install_window(me, "Here", 22);
 
 }	
 
 function install_window(position, station_name, number){
-	var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
-	var marker = new google.maps.Marker({
-		map: map,
-		position: position,
-		title: station_name,
-		icon: image,
-	});
+	if (number == 22){
+		marker = new google.maps.Marker({
+			position: position,
+			title: "here"
+		});
+		marker.setMap(map);
+	}
+	else{
+
+		var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
+		var marker = new google.maps.Marker({
+			map: map,
+			position: position,
+			title: station_name,
+			icon: image,
+		});
+	}
 
 		google.maps.event.addListener(marker, 'click', function(){
 			if (!this.getMap()._infoWindow){
@@ -301,14 +293,18 @@ function install_window(position, station_name, number){
 
 function get_content(a){
 
-	console.log(a);
-	console.log(schedulelist[a]);
-	var content_s = '<h3>' + 'Station: ' + redline_name[a] + '</h3>' ;
+	var content_s;
+	if (a == 22){
+		content_s = 'Nearest RedLine Station: ' + redline_name[distance().counter] +"<br>" + 
+		'Distance: ' + Math.round(distance().distance * 0.00062137 * 100)/100 + ' miles';
+	}else {
 
-	for (var i = 0; i < schedulelist[a].length; i++){
-		var content_s = content_s + '<ul>' + '<li>' + 'To: ' + schedulelist[a][i]['des'] + ', Arrive in: '
-		+ Math.round(schedulelist[a][i]["time"]/60) + 'min' + '</li>' + '</ul>';
-	}
+		content_s = '<h3>' + 'Station: ' + redline_name[a] + '</h3>' ;
+		for (var i = 0; i < schedulelist[a].length; i++){
+			var content_s = content_s + '<ul>' + '<li>' + 'To: ' + schedulelist[a][i]['des'] + ', Arrive in: '
+			+ Math.round(schedulelist[a][i]["time"]/60) + 'min' + '</li>' + '</ul>';
+		}
+	}	
 
 	return content_s;	
 
