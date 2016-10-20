@@ -101,6 +101,7 @@ function init(){
 	map = new google.maps.Map(document.getElementById('map_onscreen'),mapOptions);
 	getMyLocation();
 	poly_line(); //set marker only for all train statio 
+	request_info(); //request info from MBTA
 	GoogleMapMarker();
 }
 
@@ -289,8 +290,6 @@ function metroinfo(){
 */
 function GoogleMapMarker(string, lat1, long1){
 
-	request_info();
-	
 	var image = "https://maps.google.com/mapfiles/kml/shapes/info-i_maps.png";
 
 	for (var i = 0; i < 22; i++){
