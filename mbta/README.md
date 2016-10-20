@@ -23,3 +23,7 @@ Part 3: calculate distance from user to closes station, render user's info windo
 Part 4: Resquest data from MBTA API, sort the info into each station
 
 Part 5: Render markers and info window for each station
+
+2. TA Ryan Havens help me solve a crucial problem in setting content of infowindow using the info requested from API regarding to asnychronous request properly. The content is only set after I click on the marker. 
+
+3. I use approximately 14 hours doing this project. Spending most of my time on solving multi-info window and debugging all the minor problems.
