@@ -242,6 +242,31 @@ function metroinfo(){
 				}
 			}
 		}
+		//sorting time into order
+		for (var m = 0; m < schedulelist.length; m++){
+			for (var n = 0; n < (schedulelist[m].length -1); n++){
+				var min = n;
+				for (var l = n + 1; l < schedulelist[m].length; l++){
+					if (schedulelist[m][l].time < schedulelist[m][min].time){
+						min = l;
+					}
+				}
+				if (min != n){
+					var temp = schedulelist[m][n];
+					schedulelist[m][n] = schedulelist[m][min];
+					schedulelist[m][min] = temp;
+				}
+			}
+		}
+
+	} else if (request.status != 200){
+		message_warning = '<b>'+"Can't get info from MBTA, please refresh the website" + '</b>';
+
+		var warning_window = new google.maps.InfoWindow({
+			content: message_warning
+		});
+		warning_window.open(map);
+
 	}
 }
 
