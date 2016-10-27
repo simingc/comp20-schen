@@ -8,7 +8,17 @@
     <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
-        // Your work will be done here...
+        var time = new Date();
+        $(document).ready(function(e){
+            $('#msg').keypress(function(e){
+                var key = e.which;
+                if (key == 13){
+                    var current_time = time.getDate() + " " + time.getMonth() + " " + time.getFullYear();
+                    var message = $("#msg").val();
+                   $("#log").append("<li>" + time + " - " + message + "</li>");
+                }
+            });
+        });
     </script>
 </head>
 
