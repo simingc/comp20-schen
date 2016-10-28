@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
         var time = new Date();
-        $(document).ready(function(e){
+        $(document).ready(function(){
             $('#msg').keypress(function(e){
                 var key = e.which;
                 if (key == 13){
@@ -18,7 +18,7 @@
                     var message = $("#msg").val();
                     var a_thing = "<li>" + time + " - " + message + "</li>";
                     localStorage[new Date().getTime()] = a_thing;
-                   $("#log").append(a_thing);
+                   $("#log").prepend(a_thing);
                 }
             });
         });
@@ -26,10 +26,13 @@
         function reload(){
             elem = document.getElementById("log");
             var output = ' ' ;
-            for (key in localStorage){
-                output = output + localStorage[key];
+                    
+            for (var i = localStorage.length - 1; i > 0; i--){
+                output = output + localStorage.getItem(localStorage.key(i));
             }
+            
             elem.innerHTML = output;
+            
         }
 
     </script>
