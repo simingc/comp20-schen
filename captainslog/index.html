@@ -5,7 +5,6 @@
 <head>
     <meta charset="utf-8" />
     <title>Captain's Log</title>
-    <link rel="stylesheet" href="style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script>
         var time = new Date();
@@ -13,12 +12,25 @@
             $('#msg').keypress(function(e){
                 var key = e.which;
                 if (key == 13){
+                    reload();
                     var current_time = time.getDate() + " " + time.getMonth() + " " + time.getFullYear();
                     var message = $("#msg").val();
-                   $("#log").append("<li>" + time + " - " + message + "</li>");
+                    var a_thing = "<li>" + time + " - " + message + "</li>";
+                    localStorage[new Date().getTime()] = a_thing;
+                   $("#log").append(a_thing);
                 }
             });
         });
+
+        function reload(){
+            elem = document.getElementById("log");
+            var output = ' ' ;
+            for (key in localStorage){
+                output = output + localStorage[key];
+            }
+            elem.innerHTML = output;
+        }
+
     </script>
 </head>
 
