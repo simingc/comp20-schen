@@ -210,7 +210,7 @@ function distance(){
 var schedulelist = new Array(redline_station.length);
 function request_info(){
 
-	request.open("get", "https://rocky-taiga-26352.herokuapp.com/redline.json", true);
+	request.open("get", "http://peaceful-sands-84893.herokuapp.com/redline.json", true);
 	request.onreadystatechange = metroinfo;
 	request.send();
 
