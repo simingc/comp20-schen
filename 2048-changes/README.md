@@ -1,3 +1,9 @@
+Assignment 3
+Modified by Siming Chen
+On 16 November 2016
+
+Modified: when the game ends, it will automatically promtp up a window if player press a key, and it will require the player to enter the username and it will send the score and username and grid to the server application.
+
 # 2048
 A small clone of [1024](https://play.google.com/store/apps/details?id=com.veewo.a1024), based on [Saming's 2048](http://saming.fr/p/2048/) (also a clone).
 
