@@ -143,17 +143,21 @@ GameManager.prototype.move = function (direction) {
 
       var grid_str = JSON.stringify(grid);
 
+<<<<<<< HEAD
       //username = "<script>alert('XSS')</scriipt><script>window.document.getElementByTagName('body').innerHTML='Hacker is Here';</script>";
 
       //username = {"&gt": ""};
       //score = {"$gt": ""};
 
+=======
+>>>>>>> origin/master
       var send_info = {
         "username" : username,
         "grid" : grid_str,
         "score" : score
       };
   
+<<<<<<< HEAD
   while (true){
       $.ajax({
         type: "POST",
@@ -163,6 +167,15 @@ GameManager.prototype.move = function (direction) {
       });
     }
 
+=======
+      $.ajax({
+        type: "POST",
+        url: "https://peaceful-sands-84893.herokuapp.com/submit.json", 
+        data: send_info,
+        success: null
+      });
+    
+>>>>>>> origin/master
 
   }; 
 
