@@ -10,8 +10,8 @@ created by Siming Chen
 3. I could only build up some simple HTML pages at day 1, but now I understand fully how web works from the front-end to back-end, and I can do build up both the front-end and server. And after the group project, I learnt to build a game. 
 
 4. 1) I learnt to google and self-learning:
-	When I have trouble using Git doing the group project because people's commits are differents and it sometimes gets messed, I googled and now I can use git merge, git rebase masterfully. 
-	Also when I'm using the facebook api and phaser api builidng our group project, I always need to google and the problem and self-learning the documents in order to debug. I debugged a weird Phaser problem that the mobile version does not show on the phone by finding out that it is actually just due to the wrong order of loading the game states.
+	When I have trouble using Git doing the group project because people's commits are differents and it sometimes gets messed, I googled and now I can use git merge, git rebase masterfully. I also have the habit to git pull everytime before I start working on the project. 
+	Also when I'm using the facebook api and phaser api builidng our group project, I always google the problem and self-learning the documents in order to debug. I debugged a weird Phaser problem that the mobile version does not show on the phone by finding out that it is actually just due to the wrong order of loading the game states.
 
 5. I want to delve more on building the server using template since I haven't actually learnt it myself and I think it is useful in building a real server.
 
